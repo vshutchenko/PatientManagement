@@ -12,7 +12,8 @@ public class PatientEntity
     public string? Use { get; set; }
     [Required]
     public string Family { get; set; } = string.Empty;
-    public List<string>? Given { get; set; }
+    public string? Given { get; set; }
+    [MaxLength(7)]
     public string? Gender { get; set; }
     [Required]
     public DateTime BirthDate { get; set; }

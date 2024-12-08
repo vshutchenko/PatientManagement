@@ -15,7 +15,10 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDataAccessLayer(this IServiceCollection services, string connectionString)
     {
-        services.AddDbContext<PatientDbContext>(options => options.UseSqlServer(connectionString));
+        services.AddDbContext<PatientDbContext>(options => options.UseSqlServer(
+            connectionString,
+            x => x.MigrationsAssembly("PatientManagement.DataAccess")));
+
         services.AddScoped<IPatientRepository, PatientRepository>();
 
         return services;
