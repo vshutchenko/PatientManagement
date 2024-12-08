@@ -40,8 +40,13 @@ internal class PatientRepository : IPatientRepository
         _context.Update(patient);
     }
 
+    public PatientEntity? FindById(Guid id)
+    {
+        return _context.Patients.FirstOrDefault(p => p.Id == id);
+    }
+
     public void SaveChanges()
     {
         _context.SaveChanges();
-    }
+    }    
 }
