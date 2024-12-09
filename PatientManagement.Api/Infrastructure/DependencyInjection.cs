@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApiLevel(this IServiceCollection services, string connectionString)
     {
         services.AddServicesLayer(connectionString);
+        services.AddAutoMapper(typeof(MappingProfile));
 
         return services;
     }
