@@ -1,4 +1,5 @@
-﻿using PatientManagement.DataAccess.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using PatientManagement.DataAccess.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +17,12 @@ internal class PatientRepository : IPatientRepository
         _context = context;
     }
 
-    public void Create(PatientEntity patient)
+    public PatientEntity Create(PatientEntity patient)
     {
-        _context.Add(patient);
+        _context.Patients.Add(patient);
+        _context.SaveChanges();
+
+        return patient;
     }
 
     public void Delete(Guid id)
@@ -26,27 +30,25 @@ internal class PatientRepository : IPatientRepository
         var patientToDelete = _context.Patients.FirstOrDefault(p => p.Id == id);
         if (patientToDelete != null)
         {
-            _context.Remove(patientToDelete);
+            _context.Patients.Remove(patientToDelete);
         }
+
+        _context.SaveChanges();
     }
 
     public IEnumerable<PatientEntity> FindByCondition(Expression<Func<PatientEntity, bool>> expression)
     {
-        return _context.Patients.Where(expression).ToList();
+        return _context.Patients.AsNoTracking().Where(expression).ToList();
     }
 
     public void Update(PatientEntity patient)
     {
-        _context.Update(patient);
+        _context.Patients.Update(patient);
+        _context.SaveChanges();
     }
 
     public PatientEntity? FindById(Guid id)
     {
-        return _context.Patients.FirstOrDefault(p => p.Id == id);
-    }
-
-    public void SaveChanges()
-    {
-        _context.SaveChanges();
-    }    
+        return _context.Patients.AsNoTracking().FirstOrDefault(p => p.Id == id);
+    } 
 }
