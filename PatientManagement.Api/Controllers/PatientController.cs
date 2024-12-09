@@ -1,5 +1,8 @@
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using PatientManagement.Api.Infrastructure;
 using PatientManagement.Api.ViewModels.Patient;
 using PatientManagement.Services.Patient;
 
@@ -10,18 +13,33 @@ namespace PatientManagement.Controllers;
 public class PatientController : ControllerBase
 {
     private IPatientService _patientService;
+    private IValidator<PatientViewModel> _validator;
     private IMapper _mapper;
 
-    public PatientController(IPatientService patientService, IMapper mapper)
+    public PatientController(IPatientService patientService, IValidator<PatientViewModel> validator, IMapper mapper)
     {
         _patientService = patientService;
+        _validator = validator;
         _mapper = mapper;
     }
 
-    [HttpPost]
-    public IActionResult CreatePatient(CreatePatientViewModel patientVM)
+    private bool IsPatientViewModelValid(PatientViewModel patientVM)
     {
-        if (!ModelState.IsValid)
+        ValidationResult result = _validator.Validate(patientVM);
+
+        if (!result.IsValid)
+        {
+            result.AddToModelState(ModelState);
+            return false;
+        }
+
+        return true;
+    }
+
+    [HttpPost]
+    public IActionResult CreatePatient(PatientViewModel patientVM)
+    {
+        if (!IsPatientViewModelValid(patientVM))
         {
             return BadRequest(ModelState);
         }
@@ -47,17 +65,28 @@ public class PatientController : ControllerBase
         return Ok(patientVM);
     }
 
-    [HttpGet("")]
+    [HttpGet]
     public IActionResult GetPatientByDate([FromQuery] string birthDate)
     {
-        var searchParameter = SearchParameter.Parse(birthDate);
-        var patients = _patientService.FindPatientsByDate(searchParameter);
-        return Ok(patients);
+        if (SearchParameter.TryParse(birthDate, out var searchParameter))
+        {
+            var patients = _patientService.FindPatientsByDate(searchParameter!);
+            return Ok(patients);
+        }
+        else
+        {
+            return BadRequest();
+        }
     }
 
-    [HttpPut("")]
-    public IActionResult UpdatePatient(UpdatePatientViewModel patientVM)
+    [HttpPut]
+    public IActionResult UpdatePatient(PatientViewModel patientVM)
     {
+        if (!IsPatientViewModelValid(patientVM))
+        {
+            return BadRequest(ModelState);
+        }
+
         var patientExists = _patientService.FindPatientById(patientVM.Name.Id) is not null;
 
         if (!patientExists)

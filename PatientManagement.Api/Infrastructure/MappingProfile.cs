@@ -24,16 +24,8 @@ internal class MappingProfile : Profile
             }))
             .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.ToString().ToLower()));
 
-        CreateMap<UpdatePatientViewModel, Patient>()
+        CreateMap<PatientViewModel, Patient>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Name.Id))
-            .ForMember(dest => dest.Use, opt => opt.MapFrom(src => src.Name.Use))
-            .ForMember(dest => dest.Family, opt => opt.MapFrom(src => src.Name.Family))
-            .ForMember(dest => dest.Given, opt => opt.MapFrom(src => src.Name.Given))
-            .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => Enum.Parse<Gender>(src.Gender, true)))
-            .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => src.BirthDate))
-            .ForMember(dest => dest.Active, opt => opt.MapFrom(src => src.Active));
-
-        CreateMap<CreatePatientViewModel, Patient>()
             .ForMember(dest => dest.Use, opt => opt.MapFrom(src => src.Name.Use))
             .ForMember(dest => dest.Family, opt => opt.MapFrom(src => src.Name.Family))
             .ForMember(dest => dest.Given, opt => opt.MapFrom(src => src.Name.Given))

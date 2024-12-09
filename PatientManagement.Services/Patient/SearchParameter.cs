@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 namespace PatientManagement.Services.Patient;
 public class SearchParameter
 {
-    private const string ParsingErrorMessage = "Invalid search parameter.";
-
     public Expression<Func<PatientEntity, bool>> Condition { get; set; }
 
     private SearchParameter(Expression<Func<PatientEntity, bool>> condition)
@@ -19,7 +17,7 @@ public class SearchParameter
         Condition = condition;
     }
 
-    public static SearchParameter Parse(string value)
+    public static bool TryParse(string value, out SearchParameter? searchParameter)
     {
         try
         {
@@ -41,11 +39,13 @@ public class SearchParameter
                 _ => throw new ArgumentException()
             };
 
-            return new SearchParameter(condition);
+            searchParameter = new SearchParameter(condition);
+            return true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            throw new ArgumentException(ParsingErrorMessage, ex);
+            searchParameter = null;
+            return false;
         }
     }
 }
