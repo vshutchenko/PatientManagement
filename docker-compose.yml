@@ -1,0 +1,19 @@
+services:
+  patientmanagement.api:
+    image: ${DOCKER_REGISTRY-}patientmanagementapi
+    build:
+      context: .
+      dockerfile: PatientManagement.API/Dockerfile
+  
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - SA_PASSWORD=Password123
+      - ACCEPT_EULA=Y
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserverdata:/var/opt/mssql
+
+volumes:
+  sqlserverdata:

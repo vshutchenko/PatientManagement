@@ -16,7 +16,6 @@ public static class ServiceCollectionExtensions
         services.AddDataAccessLayer(connectionString);
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddScoped<IPatientService, PatientService>();
-
         return services;
     }
 }
