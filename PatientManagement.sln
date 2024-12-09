@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientManagement.DataAcces
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientManagement.ConsoleApp", "PatientManagement.ConsoleApp\PatientManagement.ConsoleApp.csproj", "{8EFDA713-2E89-4B9D-819A-06F5DD0D4987}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F77EF4AE-F697-421D-9E50-B91881EF540D}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{30BC5457-F069-45B2-A625-54967EF00F63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{8EFDA713-2E89-4B9D-819A-06F5DD0D4987}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EFDA713-2E89-4B9D-819A-06F5DD0D4987}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EFDA713-2E89-4B9D-819A-06F5DD0D4987}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F77EF4AE-F697-421D-9E50-B91881EF540D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F77EF4AE-F697-421D-9E50-B91881EF540D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F77EF4AE-F697-421D-9E50-B91881EF540D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F77EF4AE-F697-421D-9E50-B91881EF540D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30BC5457-F069-45B2-A625-54967EF00F63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30BC5457-F069-45B2-A625-54967EF00F63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30BC5457-F069-45B2-A625-54967EF00F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30BC5457-F069-45B2-A625-54967EF00F63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

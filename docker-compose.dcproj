@@ -4,7 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>f77ef4ae-f697-421d-9e50-b91881ef540d</ProjectGuid>
+    <ProjectGuid>30bc5457-f069-45b2-a625-54967ef00f63</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>patientmanagement.api</DockerServiceName>

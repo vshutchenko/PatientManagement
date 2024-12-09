@@ -103,9 +103,10 @@ public class PatientController : ControllerBase
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<PatientViewModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult GetPatientByDate([FromQuery] string birthDate)
+    public IActionResult GetPatientByDate()
     {
-        if (SearchParameter.TryParse(birthDate, out var searchParameter))
+        Request.Query.TryGetValue("birthDate", out var val);
+        if (SearchParameter.TryParse(val, out var searchParameter))
         {
             var patients = _patientService.FindPatientsByDate(searchParameter!);
             return Ok(patients);

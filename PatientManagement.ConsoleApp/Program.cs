@@ -7,35 +7,42 @@ using Bogus;
 
 class Program
 {
-    private static readonly HttpClient client = new HttpClient();
-
     static async Task Main(string[] args)
     {
-        if (args.Length < 1)
+        // Чтение URL API из переменной окружения
+        var apiUrl = Environment.GetEnvironmentVariable("API_URL");
+
+        if (string.IsNullOrEmpty(apiUrl))
         {
-            Console.WriteLine("Please provide the API URL.");
+            Console.WriteLine("API_URL environment variable is not set. Please set it to proceed.");
             return;
         }
 
-        var apiUrl = args[0];
-
         Console.WriteLine($"Sending patients to API at {apiUrl}");
 
+        var client = new HttpClient();
         var patients = GeneratePatients(100);
 
         foreach (var patient in patients)
         {
             var content = JsonContent.Create(patient);
 
-            var response = await client.PostAsync(apiUrl, content);
+            try
+            {
+                var response = await client.PostAsync(apiUrl, content);
 
-            if (response.IsSuccessStatusCode)
-            {
-                Console.WriteLine($"Successfully added patient: {patient.Name.Family}");
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"Successfully added patient: {patient.Name.Family}");
+                }
+                else
+                {
+                    Console.WriteLine($"Failed to add patient: {patient.Name.Family}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine($"Failed to add patient: {patient.Name.Family}");
+                Console.WriteLine($"Error while sending patient: {patient.Name.Family}. Exception: {ex.Message}");
             }
         }
 

@@ -17,29 +17,73 @@ public class SearchParameter
         Condition = condition;
     }
 
-    public static bool TryParse(string value, out SearchParameter? searchParameter)
+    public static bool TryParse(IEnumerable<string> values, out SearchParameter? searchParameter)
     {
         try
         {
-            var conditionStr = value.Substring(0, 2).ToLower();
-            var dateStr = value.Substring(2);
-            var parsedDate = DateTime.Parse(dateStr);
+            var conditions = new List<Expression<Func<PatientEntity, bool>>>();
 
-            Expression<Func<PatientEntity, bool>> condition = conditionStr switch
+            foreach (var value in values)
             {
-                "eq" => patient => patient.BirthDate == parsedDate,
-                "ne" => patient => patient.BirthDate != parsedDate,
-                "gt" => patient => patient.BirthDate > parsedDate,
-                "lt" => patient => patient.BirthDate >= parsedDate,
-                "ge" => patient => patient.BirthDate < parsedDate,
-                "le" => patient => patient.BirthDate <= parsedDate,
-                "sa" => patient => patient.BirthDate > parsedDate,
-                "eb" => patient => patient.BirthDate < parsedDate,
-                "ap" => patient => patient.BirthDate >= parsedDate.AddDays(-1) && patient.BirthDate <= parsedDate.AddDays(1),
-                _ => throw new ArgumentException()
-            };
+                var conditionStr = value.Substring(0, 2).ToLower();
+                var dateStr = value.Substring(2);
 
-            searchParameter = new SearchParameter(condition);
+                if (!DateTime.TryParse(dateStr, out DateTime parsedDate))
+                {
+                    throw new ArgumentException("Invalid date format");
+                }
+
+                bool hasTimeComponent = parsedDate.TimeOfDay != TimeSpan.Zero;
+
+                Expression<Func<PatientEntity, bool>> condition = conditionStr switch
+                {
+                    "eq" => patient => hasTimeComponent
+                        ? patient.BirthDate == parsedDate
+                        : patient.BirthDate.Date == parsedDate.Date,
+
+                    "ne" => patient => hasTimeComponent
+                        ? patient.BirthDate != parsedDate
+                        : patient.BirthDate.Date != parsedDate.Date,
+
+                    "gt" => patient => hasTimeComponent
+                        ? patient.BirthDate > parsedDate
+                        : patient.BirthDate.Date > parsedDate.Date,
+
+                    "lt" => patient => hasTimeComponent
+                        ? patient.BirthDate < parsedDate
+                        : patient.BirthDate.Date < parsedDate.Date,
+
+                    "ge" => patient => hasTimeComponent
+                        ? patient.BirthDate >= parsedDate
+                        : patient.BirthDate.Date >= parsedDate.Date,
+
+                    "le" => patient => hasTimeComponent
+                        ? patient.BirthDate <= parsedDate
+                        : patient.BirthDate.Date <= parsedDate.Date,
+
+                    "sa" => patient => hasTimeComponent
+                        ? patient.BirthDate > parsedDate
+                        : patient.BirthDate.Date > parsedDate.Date,
+
+                    "eb" => patient => hasTimeComponent
+                        ? patient.BirthDate < parsedDate
+                        : patient.BirthDate.Date < parsedDate.Date,
+
+                    "ap" => patient => hasTimeComponent
+                        ? patient.BirthDate >= parsedDate.AddDays(-1) && patient.BirthDate <= parsedDate.AddDays(1)
+                        : patient.BirthDate.Date >= parsedDate.Date.AddDays(-1) && patient.BirthDate.Date <= parsedDate.Date.AddDays(1),
+
+                    _ => throw new ArgumentException($"Invalid operator: {conditionStr}")
+                };
+
+                conditions.Add(condition);
+            }
+
+
+
+            var combinedCondition = conditions.Aggregate((current, next) => CombineExpressions(current, next));
+
+            searchParameter = new SearchParameter(combinedCondition);
             return true;
         }
         catch (Exception)
@@ -47,5 +91,18 @@ public class SearchParameter
             searchParameter = null;
             return false;
         }
+    }
+
+    private static Expression<Func<PatientEntity, bool>> CombineExpressions(
+        Expression<Func<PatientEntity, bool>> expr1,
+        Expression<Func<PatientEntity, bool>> expr2)
+    {
+        var parameter = Expression.Parameter(typeof(PatientEntity), "patient");
+
+        var combined = Expression.AndAlso(
+            Expression.Invoke(expr1, parameter),
+            Expression.Invoke(expr2, parameter));
+
+        return Expression.Lambda<Func<PatientEntity, bool>>(combined, parameter);
     }
 }
