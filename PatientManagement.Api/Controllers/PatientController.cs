@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using PatientManagement.Api.Infrastructure;
 using PatientManagement.Api.ViewModels.Patient;
 using PatientManagement.Services.Patient;
+using PatientManagement.Services.Parsers;
 
 namespace PatientManagement.Controllers;
 
@@ -17,6 +18,7 @@ namespace PatientManagement.Controllers;
 public class PatientController : ControllerBase
 {
     private IPatientService _patientService;
+    private IPatientExpressionParser _patientExpressionParser;
     private IValidator<PatientViewModel> _validator;
     private IMapper _mapper;
 
@@ -24,11 +26,17 @@ public class PatientController : ControllerBase
     /// Initializes a new instance of the <see cref="PatientController"/> class.
     /// </summary>
     /// <param name="patientService">The service responsible for patient-related operations.</param>
+    /// <param name="patientExpressionParser">The parser responsible for conversion of query string to expression.</param>
     /// <param name="validator">The validator for <see cref="PatientViewModel"/>.</param>
     /// <param name="mapper">The mapper for converting between models and entities.</param>
-    public PatientController(IPatientService patientService, IValidator<PatientViewModel> validator, IMapper mapper)
+    public PatientController(
+        IPatientService patientService,
+        IPatientExpressionParser patientExpressionParser,
+        IValidator<PatientViewModel> validator,
+        IMapper mapper)
     {
         _patientService = patientService;
+        _patientExpressionParser = patientExpressionParser;
         _validator = validator;
         _mapper = mapper;
     }
@@ -65,8 +73,9 @@ public class PatientController : ControllerBase
 
         var patient = _mapper.Map<Patient>(patientVM);
         var createdPatient = _patientService.CreatePatient(patient);
+        var createdPatientVM = _mapper.Map<PatientViewModel>(createdPatient);
 
-        return CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.Id }, createdPatient);
+        return CreatedAtAction(nameof(GetPatientById), new { id = createdPatientVM.Name.Id }, createdPatientVM);
     }
 
     /// <summary>
@@ -96,7 +105,6 @@ public class PatientController : ControllerBase
     /// <summary>
     /// Searches for patients by birth date with different conditions.
     /// </summary>
-    /// <param name="birthDate">The birth date with a search condition.</param>
     /// <returns>A list of patients matching the condition.</returns>
     /// <response code="200">Returns the list of matching patients.</response>
     /// <response code="400">If the search parameter is invalid.</response>
@@ -106,9 +114,10 @@ public class PatientController : ControllerBase
     public IActionResult GetPatientByDate()
     {
         Request.Query.TryGetValue("birthDate", out var val);
-        if (SearchParameter.TryParse(val, out var searchParameter))
+
+        if (_patientExpressionParser.TryParseExpression(val, out var expression))
         {
-            var patients = _patientService.FindPatientsByDate(searchParameter!);
+            var patients = _patientService.FindPatientsByExpression(expression!);
             return Ok(patients);
         }
         else

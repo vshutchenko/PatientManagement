@@ -1,6 +1,8 @@
-﻿using System;
+﻿using PatientManagement.DataAccess.Patient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,5 +13,5 @@ public interface IPatientService
     Patient CreatePatient(Patient patient);
     void UpdatePatient(Patient patient);
     void DeletePatient(Guid id);
-    IEnumerable<Patient> FindPatientsByDate(SearchParameter searchParameter);
+    IEnumerable<Patient> FindPatientsByExpression(Expression<Func<PatientEntity, bool>> expression);
 }

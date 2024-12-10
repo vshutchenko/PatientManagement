@@ -50,9 +50,9 @@ internal class PatientService : IPatientService
         _patientRepository.Delete(id);
     }
 
-    public IEnumerable<Patient> FindPatientsByDate(SearchParameter searchParameter)
+    public IEnumerable<Patient> FindPatientsByExpression(Expression<Func<PatientEntity, bool>> expression)
     {
-        var patientEntities = _patientRepository.FindByCondition(searchParameter.Condition);
+        var patientEntities = _patientRepository.FindByCondition(expression);
         return _mapper.Map<IEnumerable<Patient>>(patientEntities);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PatientManagement.DataAccess.Infrastructure;
 using PatientManagement.Services.Patient;
+using PatientManagement.Services.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ public static class ServiceCollectionExtensions
         services.AddDataAccessLayer(connectionString);
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddScoped<IPatientService, PatientService>();
+        services.AddTransient<IPatientExpressionParser, PatientExpressionParser>();
         return services;
     }
 }
