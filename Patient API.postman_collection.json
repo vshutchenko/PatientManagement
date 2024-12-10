@@ -1,0 +1,297 @@
+{
+	"info": {
+		"_postman_id": "983d0e5c-e4e3-4d04-aa9f-246a51a9ad6f",
+		"name": "Patient API",
+		"description": "Postman collection for Patient API demonstrating CRUD operations and search by birthDate.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19076233"
+	},
+	"item": [
+		{
+			"name": "Create patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": {\r\n        \"use\": \"official\",\r\n        \"family\": \"Ivanov\",\r\n        \"given\": [\r\n            \"Ivan\",\r\n            \"Ivanovich\"\r\n        ]\r\n    },\r\n    \"gender\": \"male\",\r\n    \"birthDate\": \"2024-01-13T18:25:43\",\r\n    \"active\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/patient",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"patient"
+					]
+				},
+				"description": "Add a new patient."
+			},
+			"response": []
+		},
+		{
+			"name": "Find patient by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/patient/2acd6cc1-bcf0-4ded-6d42-08dd18b1a619",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"patient",
+						"2acd6cc1-bcf0-4ded-6d42-08dd18b1a619"
+					]
+				},
+				"description": "Get a patient by ID."
+			},
+			"response": []
+		},
+		{
+			"name": "Update patient",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": {\r\n        \"id\": \"2acd6cc1-bcf0-4ded-6d42-08dd18b1a619\",\r\n        \"use\": \"official\",\r\n        \"family\": \"Petrov\",\r\n        \"given\": [\r\n            \"Petr\",\r\n            \"Petrovich\"\r\n        ]\r\n    },\r\n    \"gender\": \"female\",\r\n    \"birthDate\": \"2024-01-13T18:25:43\",\r\n    \"active\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/patient",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"patient"
+					]
+				},
+				"description": "Update an existing patient."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete patient",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/patient/bcec9bc2-ea35-41d8-6d41-08dd18b1a619",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"patient",
+						"bcec9bc2-ea35-41d8-6d41-08dd18b1a619"
+					]
+				},
+				"description": "Delete a patient by ID."
+			},
+			"response": []
+		},
+		{
+			"name": "Find patients by birth date (gt)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/patient?birthDate=gt2024-01-13",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"patient"
+					],
+					"query": [
+						{
+							"key": "birthDate",
+							"value": "gt2024-01-13"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find patients by birth date (eq)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/patient?birthDate=eq2024-11-01",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"patient"
+					],
+					"query": [
+						{
+							"key": "birthDate",
+							"value": "eq2024-11-01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find patients by birth date (ne)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/patient?birthDate=ne2024-08-26",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"patient"
+					],
+					"query": [
+						{
+							"key": "birthDate",
+							"value": "ne2024-08-26"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find patients by birth date (eb)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/patient?birthDate=eb2015-01-01T20:30:00",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"patient"
+					],
+					"query": [
+						{
+							"key": "birthDate",
+							"value": "eb2015-01-01T20:30:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find patients by birth date (sa)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/patient?birthDate=sa2024-11-08T07:36:31.301",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"patient"
+					],
+					"query": [
+						{
+							"key": "birthDate",
+							"value": "sa2024-11-08T07:36:31.301"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find patients by birth date (ap)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/patient?birthDate=ap2024-03-03",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"patient"
+					],
+					"query": [
+						{
+							"key": "birthDate",
+							"value": "ap2024-03-03"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find patients by birth date in date range",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/patient?birthDate=gt2024-01-01&birthDate=lt2024-12-31",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"patient"
+					],
+					"query": [
+						{
+							"key": "birthDate",
+							"value": "gt2024-01-01"
+						},
+						{
+							"key": "birthDate",
+							"value": "lt2024-12-31"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:8443",
+			"type": "environment"
+		}
+	]
+}
