@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PatientManagement.Api.Infrastructure;
-using PatientManagement.DataAccess.Database;
+using PatientManagement.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,17 +8,15 @@ builder.Services.AddApiLayer(builder.Configuration.GetConnectionString("PatientM
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetService<PatientDbContext>();
-    dbContext?.Database.Migrate();
-}
+app.ApplyMigrations();
 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseAuthorization();
 
