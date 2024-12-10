@@ -1,9 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PatientManagement.Services.Patient;
+﻿namespace PatientManagement.Services.Patient;
 public class Patient
 {
     public Guid Id { get; set; }

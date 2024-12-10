@@ -105,17 +105,16 @@ public class PatientController : ControllerBase
     /// <summary>
     /// Searches for patients by birth date with different conditions.
     /// </summary>
+    /// <param name="birthDate">Collection of date parameters.</param>
     /// <returns>A list of patients matching the condition.</returns>
     /// <response code="200">Returns the list of matching patients.</response>
     /// <response code="400">If the search parameter is invalid.</response>
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<PatientViewModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult GetPatientByDate()
+    public IActionResult GetPatientByDate([FromQuery] List<string> birthDate)
     {
-        Request.Query.TryGetValue("birthDate", out var val);
-
-        if (_patientExpressionParser.TryParseExpression(val, out var expression))
+        if (_patientExpressionParser.TryParseExpression(birthDate, out var expression))
         {
             var patients = _patientService.FindPatientsByExpression(expression!);
             return Ok(patients);

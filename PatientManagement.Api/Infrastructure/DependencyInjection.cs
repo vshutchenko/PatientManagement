@@ -1,10 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PatientManagement.Services.Infrastructure;
+﻿using PatientManagement.Services.Infrastructure;
 using FluentValidation;
 using PatientManagement.Api.Validators;
 using PatientManagement.Api.ViewModels.Patient;

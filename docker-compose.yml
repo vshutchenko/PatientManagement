@@ -1,6 +1,7 @@
 services:
   api:
     image: api
+    container_name: api
     build:
       context: .
       dockerfile: PatientManagement.Api/Dockerfile
@@ -12,10 +13,11 @@ services:
     networks:
       - appnetwork
     environment:
-      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_URLS=https://+:443;http://+:80
 
   db:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver-db
     environment:
       - SA_PASSWORD=Password123
       - ACCEPT_EULA=Y
@@ -28,6 +30,7 @@ services:
 
   consoleapp:
     image: consoleapp
+    container_name: console-app
     build:
       context: .
       dockerfile: PatientManagement.ConsoleApp/Dockerfile

@@ -1,13 +1,6 @@
 ﻿using AutoMapper;
-using Newtonsoft.Json;
 using PatientManagement.Api.ViewModels.Patient;
-using PatientManagement.DataAccess.Patient;
 using PatientManagement.Services.Patient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PatientManagement.Api.Infrastructure;
 internal class MappingProfile : Profile

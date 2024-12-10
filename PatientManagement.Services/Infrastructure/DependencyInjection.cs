@@ -2,11 +2,6 @@
 using PatientManagement.DataAccess.Infrastructure;
 using PatientManagement.Services.Patient;
 using PatientManagement.Services.Parsers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace PatientManagement.Services.Infrastructure;

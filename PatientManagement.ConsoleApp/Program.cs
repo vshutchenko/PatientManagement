@@ -1,15 +1,10 @@
-﻿using System;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 using Bogus;
 
 class Program
 {
     static async Task Main(string[] args)
     {
-        // Чтение URL API из переменной окружения
         var apiUrl = Environment.GetEnvironmentVariable("API_URL");
 
         if (string.IsNullOrEmpty(apiUrl))
